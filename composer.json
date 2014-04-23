@@ -1,0 +1,20 @@
+{
+    "name": "task/console",
+    "description": "Utilities for working with Symfony's Console component and Task",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Fisher",
+            "email": "mike@mbfisher.com"
+        }
+    ],
+    "require": {
+        "task/plugin": "~1.1",
+        "symfony/console": "~2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Task\\Plugin\\Console\\": "src/"
+        }
+    }
+}
