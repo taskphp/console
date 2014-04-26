@@ -1,0 +1,7 @@
+language: php
+php:
+  - 5.5
+  - 5.4
+install: composer install
+before_script: composer require task/cli ~0.1
+script: ./vendor/bin/task test -p config=phpspec.ci.yml
