@@ -2,39 +2,46 @@
 
 namespace Task\Plugin\Console;
 
+use Task\Plugin\Stream\ReadableInterface;
+use Task\Plugin\Stream\WritableInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Task\Plugin\Console\Output\ProxyOutput;
 
-class CommandRunner
+class CommandRunner implements ReadableInterface
 {
     protected $parameters = [];
 
     public function __construct(Application $app, $commandName)
     {
-        if ($command = $this->findCommand($app, $commandName)) {
-            $command->setApplication($app);
-            $command->mergeApplicationDefinition();
+        $command = $this->findCommand($app, $commandName);
 
-            $this->command = $command->getName();
-            $this->definition = $command->getDefinition();
-            $this->app = $app;
-        } else {
-            throw new \InvalidArgumentException("No command found for [$commandName]");
-        }
+        $command->setApplication($app);
+        $command->mergeApplicationDefinition();
+
+        $app->setAutoExit(false);
+
+        $this->command = $command->getName();
+        $this->definition = $command->getDefinition();
+        $this->app = $app;
     }
 
+    /**
+     * Should throw InvalidArgumentException if command not found.
+     */
     public function findCommand(Application $app, $commandName)
     {
         return $app->get($commandName);
     }
 
-    public function run(OutputInterface $output)
+    public function run(OutputInterface $output = null)
     {
         $input = new ArrayInput(array_merge([
             'command' => $this->command
-        ], $this->parameters));
+        ], $this->getParameters()));
         return $this->app->run($input, $output);
     }
 
@@ -62,6 +69,23 @@ class CommandRunner
     {
         $parts = preg_split('/(?<=[a-z])(?![a-z])/', $name, -1, PREG_SPLIT_NO_EMPTY);
         return implode('-', array_map('strtolower', $parts));
+    }
+
+    public function read()
+    {
+        $output = new BufferedOutput;
+        $this->run($output);
+        return $output->fetch();
+    }
+
+    public function pipe(WritableInterface $to)
+    {
+        if ($to instanceof OutputInterface) {
+            $this->run($to);
+            return $to;
+        } else {
+            return $this->pipe((new ProxyOutput)->setTarget($to));
+        }
     }
 
     public function getParameters()

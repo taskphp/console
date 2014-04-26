@@ -12,6 +12,11 @@
         "task/plugin": "~1.1",
         "symfony/console": "~2.4"
     },
+    "require-dev": {
+        "task/task": "~0.1",
+        "task/phpspec": "~0.1",
+        "henrikbjorn/phpspec-code-coverage" : "1.0.*@dev"
+    },
     "autoload": {
         "psr-4": {
             "Task\\Plugin\\Console\\": "src/"

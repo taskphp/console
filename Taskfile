@@ -1,0 +1,21 @@
+<?php
+
+require 'vendor/autoload.php';
+
+use Task\Plugin\PhpSpecPlugin;
+
+$project = new Task\Project('task/console');
+
+$project->inject(function ($container) {
+    $container['phpspec'] = new PhpSpecPlugin;
+});
+
+$project->addTask('test', ['phpspec', function ($phpspec) {
+    $config = $this->getProperty('config', 'phpspec.yml');
+    $phpspec->command('run')
+        ->setConfig($config)
+        ->setFormat('pretty')
+        ->pipe($this->getOutput());
+}]);
+
+return $project;
