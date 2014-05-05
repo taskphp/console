@@ -2,6 +2,7 @@ task/console
 ============
 
 [![Build Status](https://travis-ci.org/taskphp/console.svg?branch=master)](https://travis-ci.org/taskphp/console)
+[![Coverage Status](https://coveralls.io/repos/taskphp/console/badge.png)](https://coveralls.io/r/taskphp/console)
 
 Example
 =======
