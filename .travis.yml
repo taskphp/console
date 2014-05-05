@@ -4,4 +4,5 @@ php:
   - 5.4
 install: composer install
 before_script: composer require task/cli ~0.1
-script: ./vendor/bin/task test -p config=phpspec.ci.yml
+script: ./vendor/bin/task test
+after_script: vendor/bin/coveralls -v
