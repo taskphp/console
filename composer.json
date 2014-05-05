@@ -14,7 +14,9 @@
     },
     "require-dev": {
         "task/task": "~0.1",
-        "henrikbjorn/phpspec-code-coverage" : "1.0.*@dev"
+        "task/phpspec": "~0.1",
+        "henrikbjorn/phpspec-code-coverage" : "1.0.*@dev",
+        "satooshi/php-coveralls": "~0.6"
     },
     "autoload": {
         "psr-4": {

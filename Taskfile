@@ -3,7 +3,7 @@
 require 'vendor/autoload.php';
 
 use Task\Plugin\ProcessPlugin;
-use PhpSpec\Console\Application;
+use PhpSpec\Console\Application as PhpSpecApplication;
 use Symfony\Component\Console\Input\ArrayInput;
 
 $project = new Task\Project('task/console');
@@ -11,10 +11,9 @@ $project = new Task\Project('task/console');
 $project->addTask('test', function () {
     $input = new ArrayInput([
         'command' => 'run',
-        '--config' => $this->getProperty('config', 'phpspec.yml'),
         '--format' => 'pretty'
     ]);
-    (new Application('2.0.*@dev'))->run($input, $this->getOutput());
+    (new PhpSpecApplication('2.0.*@dev'))->run($input, $this->getOutput());
 });
 
 return $project;
