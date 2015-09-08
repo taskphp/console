@@ -92,4 +92,11 @@ class CommandRunner implements ReadableInterface
     {
         return $this->parameters;
     }
+
+    public function setParameter($param, $value)
+    {
+        $this->parameters[$param] = $value;
+        return $this;
+    }
+
 }

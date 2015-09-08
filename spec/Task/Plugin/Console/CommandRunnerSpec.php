@@ -66,6 +66,17 @@ class CommandRunnerSpec extends ObjectBehavior
         $this->run($output);
     }
 
+    function it_should_run_a_command_with_manually_set_parameters(Application $app, Command $command, InputDefinition $definition, OutputInterface $output)
+    {
+        $this->setup($app, $command, $definition);
+
+        $this->setParameter('--foo', 'bar');
+        $input = new ArrayInput(['command' => 'test', '--foo' => 'bar']);
+
+        $app->run($input, $output)->shouldBeCalled();
+        $this->run($output);
+    }
+
     function it_should_throw_on_unknown_argument(Application $app, Command $command, InputDefinition $definition)
     {
         $this->setup($app, $command, $definition);
